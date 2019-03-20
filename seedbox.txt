@@ -1,0 +1,37 @@
+How to host a seedbox
+
+If you have a server at your lab or home, and you expect to produce biology data or bioinformatics studies, I humbly beseech you to host a seedbox. It’s a BitTorrent client daemon that other peers can reach 24/7 at a consistent port in the ephemeral range.
+
+All peers connect over TCP to [url=https://biotorrents.de]the BioTorrents.de tracker[/url] on port 34000, which then directs peers to form UDP connections at specific ports. This mitigates peer discovery leaks (e.g., disable UPnP) and removes traffic deprioritization on filtered ports.
+
+[url=https://packages.debian.org/sid/rtorrent]rTorrent[/url] and [url=https://packages.debian.org/sid/transmission-daemon]Transmission[/url] are two good choices for seedbox software. I like to configure the BitTorrent client and set a login script to run [code]transmission-daemon(1)[/code] and other programs. rTorrent needs [url=https://wiki.archlinux.org/index.php/RTorrent#Web_interface]a standalone web interface[/url] and Transmission includes its own.
+
+I like to have the web interface listen on localhost, reverse proxy it through Nginx with TLS, and access it through SSH with a SOCKSv5 proxy. Set Firefox to use [code]localhost:1080[/code] or any unprivileged port and use the [code]ssh -D 1080[/code] flag when you access the server.
+
+Include [code]12.34.56.78 torrents.foo.com[/code] in [code]/etc/hosts[/code] on your personal laptop or add a DNS delegation to [code]127.0.0.1[/code] on the server and proxy DNS through SOCKSv5. [url=https://www.vultr.com/docs/running-nsd-and-unbound-on-openbsd-5-6]The NSD and Unbound pair[/url] is an easy and popular way to scale a DNS zone to accommodate smart lab equipment.
+
+The Nginx config below proxies requests for [code]https://torrents.foo.com[/code] to [url=https://github.com/Novik/ruTorrent]ruTorrent[/url] listening on [code]localhost:5000[/code] with [url=https://cipherli.st]security hardened headers[/url], saved as [code]/etc/nginx/conf.d/tls_params[/code] or similar and included in the main [code]/etc/nginx/nginx.conf[/code]. Note that rTorrent itself runs in a tmux window.
+[code]
+# Take note of http://wiki.nginx.org/Pitfalls
+server {
+    listen      443;
+    server_name torrents.foo.com;
+
+    ssl                 on;
+    ssl_certificate     /etc/ssl/torrents.foo.com.crt;
+    ssl_certificate_key /etc/ssl/torrents.private/foo.com.key;
+
+    access_log off;
+    error_log  /var/log/nginx/torrents.foo.com-error.log;
+
+    # https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy
+    location / {
+        proxy_pass http://localhost:5000;
+    }
+}
+[/code]
+Then from the web interface or on the command line you can create torrents with the private flag [code]-p[/code] and the announce URL from [url=https://biotorrents.de/upload.php]the BioTorrents.de upload page[/url]. The upload script sanitizes torrent files so you must download it from the site after uploading and open [i]that[/i] copy in the client.
+
+Please see [url=https://wiki.archlinux.org/index.php/Iptables#Front-ends]an iptables frontend[/url] or [url=https://www.openbsd.org/faq/pf/rdr.html]the OpenBSD pf docs[/url] to set up network address translation/port forwarding. Note that you don’t need the [code]rdr-to[/code] phrase if you run pf on the seedbox itself. Remember to also update your router settings to pass torrent traffic to the seedbox’s IP address.
+
+Thank you for your interest in this project and for considering a seedbox at your lab or home. It uses minimal CPU and RAM resources, and only intermittent bursts of bandwidth.
