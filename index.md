@@ -413,5 +413,5 @@ Ratio rules still apply and members are expected to give back by seeding downloa
 ## Further development
 
 BioTorrents.de is under active development.
-Please see [the Git repo](https://git.pjc.is/biotorrents.de/) for more information.
+Please see [the Git repo](https://git.pjc.is/gazelle/.git/) for more information.
 Besides making the site look and act less like an anime porn tracker, two specific challenges include adding NCBI autocomplete functionality and updating the image proxy to serve DOI numbers via Sci-Hub.
