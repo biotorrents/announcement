@@ -398,7 +398,7 @@ The tracker only allows high quality, open source clients at the latest major ve
 Note that LibTorrent 0.1x.y also covers rTorrent/ruTorrent and other clients that use [rakshasa's library](https://github.com/rakshasa/libtorrent).
 
 | Client Name		| Peer ID	|
-| ---			| ---		|
+| :---			| :---:		|
 | Deluge 1.x.y		| -DE1		|
 | KTorrent 5.x.y	| -KT5		|
 | LibTorrent 0.1x.y	| -lt01		|
