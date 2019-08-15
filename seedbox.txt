@@ -2,7 +2,7 @@ How to host a seedbox
 
 If you have a server at your lab or home, and you expect to produce biology data or bioinformatics studies, I humbly beseech you to host a seedbox. It’s a BitTorrent client daemon that other peers can reach 24/7 at a consistent port in the ephemeral range.
 
-All peers connect over TCP to [url=https://biotorrents.de]the BioTorrents.de tracker[/url] on port 34000, which then directs peers to form UDP connections at specific ports. This mitigates peer discovery leaks (e.g., disable UPnP) and removes traffic deprioritization on filtered ports.
+All peers connect over TCP to [url=https://biotorrents.de]the BioTorrents.de tracker[/url] on port 443, which then directs peers to form UDP connections at specific ports. This mitigates peer discovery leaks (e.g., disable UPnP) and removes traffic deprioritization on filtered ports.
 
 [url=https://packages.debian.org/sid/rtorrent]rTorrent[/url] and [url=https://packages.debian.org/sid/transmission-daemon]Transmission[/url] are two good choices for seedbox software. I like to configure the BitTorrent client and set a login script to run [code]transmission-daemon(1)[/code] and other programs. rTorrent needs [url=https://wiki.archlinux.org/index.php/RTorrent#Web_interface]a standalone web interface[/url] and Transmission includes its own.
 
@@ -14,10 +14,9 @@ The Nginx config below proxies requests for [code]https://torrents.foo.com[/code
 [code]
 # Take note of http://wiki.nginx.org/Pitfalls
 server {
-    listen      443;
+    listen      443 ssl;
     server_name torrents.foo.com;
 
-    ssl                 on;
     ssl_certificate     /etc/ssl/torrents.foo.com.crt;
     ssl_certificate_key /etc/ssl/torrents.private/foo.com.key;
 

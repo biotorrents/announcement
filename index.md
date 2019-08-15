@@ -1,21 +1,26 @@
 ---
 title: Serving P2P biology data on Debian 9 with BitTorrent
 author: Peter J. Collins
-date: 2019-02-26
+date: 2019-06-14
+keywords: [computer security, molecular sequence data, social media, software design]
+abstract: |
+ Efficiently sharing biology data such as DNA, RNA, and protein sequences online is an open problem.
+ Private BitTorrent trackers are an ideal model to privately and securely share large amounts of data with integrity in a distributed way.
 ---
 
-[![BioTorrents tracker logo](logo.full.png)](https://biotorrents.de)
+[![BioTorrents.de tracker logo](logo.full.png)](https://biotorrents.de)
 
 # Introduction
 
 Efficiently sharing biology data such as DNA, RNA, and protein sequences online is an open problem.
 Repositories such as those that NCBI develops often serve gigabytes of data over FTP or HTTP from a content delivery network.
+BitTorrent enables P2P transfers over UDP and supports RSS polling with automatic downloads. 
 
 Private BitTorrent trackers are an ideal model to privately and securely share large amounts of data with integrity in a distributed way.
 This paper describes my 2019 reimplementation of [the original 2010 BioTorrents site](https://doi.org/10.1371/journal.pone.0010071) with best-of-breed hentai and music tracker software.
 All the links are safe for work.
 
-BitTorrent trackers are kind of like air traffic controllers as data piecemeal reaches its destination via seeders, who make it available by their own download progress.
+BitTorrent trackers are kind of like air traffic controllers as the data piecemeal reaches its destination via seeders, who make it available by their own download progress.
 Relevant features of private BitTorrent trackers for biology data include
 
 - the ability to store and retrieve human readable annotations,
@@ -27,10 +32,10 @@ Relevant features of private BitTorrent trackers for biology data include
 
 # How to host a seedbox
 
-If you have a server at your lab or home, and you expect to produce biology data or bioinformatics studies, I humbly beseech you to host a seedbox.
+If you have a server at your lab or home, and you expect to produce sequence data or bioinformatics studies, I humbly beseech you to host a seedbox.
 It's a BitTorrent client daemon that other peers can reach 24/7 at a consistent port in the ephemeral range.
 
-All peers connect over TCP to [the BioTorrents.de tracker](https://biotorrents.de) on port 34000, which then directs peers to form UDP connections at specific ports.
+All peers connect over TCP to [the BioTorrents.de tracker reverse proxy](https://biotorrents.de) on port 443, which then directs peers to form UDP connections at specific ports.
 This mitigates peer discovery leaks (e.g., disable UPnP) and removes traffic deprioritization on filtered ports.
 
 [rTorrent](https://packages.debian.org/sid/rtorrent) and [Transmission](https://packages.debian.org/sid/transmission-daemon) are two good choices for seedbox software.
@@ -49,10 +54,9 @@ Note that rTorrent itself runs in a tmux window.
 ```nginx
 # Take note of http://wiki.nginx.org/Pitfalls
 server {
-	listen      443;
+	listen      443 ssl;
 	server_name torrents.foo.com;
 
-	ssl                 on;
 	ssl_certificate     /etc/ssl/torrents.foo.com.crt;
 	ssl_certificate_key /etc/ssl/torrents.private/foo.com.key;
 
@@ -67,11 +71,11 @@ server {
 ```
 
 Then from the web interface or on the command line you can create torrents with the private flag `-p` and the announce URL from [the BioTorrents.de upload page](https://biotorrents.de/upload.php).
-The upload script sanitizes torrent files so you must download it from the site after uploading and open *that* copy in the client.
+The upload script sanitizes torrent files so you must download it from the site after uploading it, and open *that* copy in the client.
 
 Please see [an iptables frontend](https://wiki.archlinux.org/index.php/Iptables#Front-ends) or [the OpenBSD pf docs](https://www.openbsd.org/faq/pf/rdr.html) to set up network address translation/port forwarding.
 Note that you don't need the `rdr-to` phrase if you run pf on the seedbox itself.
-Remember to also update your router settings to pass torrent traffic to the seedbox's IP address.
+Remember to also update your router settings to assign a static IP address to the seedbox and pass torrent traffic to it on the LAN.
 
 Thank you for your interest in this project and for considering a seedbox at your lab or home.
 It uses minimal CPU and RAM resources, and only intermittent bursts of bandwidth.
@@ -270,14 +274,18 @@ Then I backed up the Gazelle database schema to edit it later for biology data.
 
 I imported the default database and [created a BioTorrents user](https://dev.mysql.com/doc/refman/8.0/en/adding-users.html) to manage it.
 `mysql -u root -p < /var/www/html/biotorrents.de/gazelle.sql` got everything ready before I opened a root shell.
-I had to drop and import the `tags` table again to clear errors on the Torrents, Collections, and Requests pages.
+I had to drop and import the `tags` table again to clear errors on the Torrents, Collections, and Requests pages, even with [a reference schema](https://git.pjc.is/gazelle/.git/tree/gazelle.sql) that incorporates this step and the later Sphinx initialization.
 
 ```sql
 CREATE USER 'biotorrents'@'localhost' IDENTIFIED BY 'pwgen -s | encrypt';
 
-GRANT ALL PRIVILEGES ON `gazelle`.* TO 'biotorrents'@'localhost';
+GRANT ALL PRIVILEGES ON `gazelle_development`.* TO 'biotorrents'@'localhost';
 
-DROP TABLE gazelle.tags;
+USE gazelle_development;
+
+SOURCE /var/www/html/biotorrents.de/gazelle.sql;
+
+DROP TABLE gazelle_development.tags;
 
 CREATE TABLE `tags` (
   `ID` int(10) NOT NULL AUTO_INCREMENT,
@@ -315,9 +323,8 @@ Note that Debian's Sphinx locations differ somewhat from Oppaitime's example.
 
 Then I copied and edited `/etc/sphinxsearch/example.sql` to index novel database rows.
 It was important to check the source `src1` and index `test1` names.
-I imported it into the Gazelle database with ` mysql -u biotorrents -p < /etc/sphinxsearch/gazelle.sql`.
 
-Then I had to prepare the Sphinx user's home folder `/var/run/sphinxsearch` and make an init script.
+I also had to prepare the Sphinx user's home folder `/var/run/sphinxsearch` and make an init script.
 I made `/etc/systemd/system/searchd` with the script below and made it executable.
 
 ```shell
