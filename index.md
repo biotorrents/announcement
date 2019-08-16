@@ -270,37 +270,12 @@ Many moving parts fell into place as I iterated over the setup process.
 ## MariaDB and the Gazelle database
 
 I installed MariaDB and initialized it with `mysql_secure_installation`.
-Then I backed up the Gazelle database schema to edit it later for biology data.
-
-I imported the default database and [created a BioTorrents user](https://dev.mysql.com/doc/refman/8.0/en/adding-users.html) to manage it.
-`mysql -u root -p < /var/www/html/biotorrents.de/gazelle.sql` got everything ready before I opened a root shell.
-I had to drop and import the `tags` table again to clear errors on the Torrents, Collections, and Requests pages, even with [a reference schema](https://git.pjc.is/gazelle/.git/tree/gazelle.sql) that incorporates this step and the later Sphinx initialization.
+Then I imported the default database and [created a BioTorrents user](https://dev.mysql.com/doc/refman/8.0/en/adding-users.html) to manage it.
 
 ```sql
-CREATE USER 'biotorrents'@'localhost' IDENTIFIED BY 'pwgen -s | encrypt';
-
-GRANT ALL PRIVILEGES ON `gazelle_development`.* TO 'biotorrents'@'localhost';
-
-USE gazelle_development;
-
 SOURCE /var/www/html/biotorrents.de/gazelle.sql;
-
-DROP TABLE gazelle_development.tags;
-
-CREATE TABLE `tags` (
-  `ID` int(10) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(100) DEFAULT NULL,
-  `TagType` enum('genre','other') NOT NULL DEFAULT 'other',
-  `Uses` int(12) NOT NULL DEFAULT '1',
-  `UserID` int(10) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `Name_2` (`Name`),
-  KEY `TagType` (`TagType`),
-  KEY `Uses` (`Uses`),
-  KEY `UserID` (`UserID`)
-) ENGINE=InnoDB CHARSET=utf8mb4;
-
-INSERT INTO tags (ID, Name, TagType, Uses, UserID) VALUES (1, 'foo', 'genre', 0, 1),(2, 'bar', 'genre', 0, 1),(3, 'baz', 'genre', 0, 1);
+CREATE USER 'biotorrents'@'localhost' IDENTIFIED BY 'pwgen -s | encrypt';
+GRANT ALL PRIVILEGES ON `gazelle_development`.* TO 'biotorrents'@'localhost';
 ```
 
 I also had to disable the `ONLY_FULL_GROUP_BY` mode in `/etc/mysql/my.cnf` to clear errors on the Forums and Stats pages.
@@ -320,9 +295,6 @@ sql_mode = "STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_
 Sphinx is a full-text search engine for the major FOSS relational databases that also powers Craigslist.
 I installed it and used the `/etc/sphinxsearch/sphinx.conf` example in [Oppaitime's Git wiki](https://git.oppaiti.me/Oppaitime/Gazelle/wiki/Sphinx-Config).
 Note that Debian's Sphinx locations differ somewhat from Oppaitime's example.
-
-Then I copied and edited `/etc/sphinxsearch/example.sql` to index novel database rows.
-It was important to check the source `src1` and index `test1` names.
 
 I also had to prepare the Sphinx user's home folder `/var/run/sphinxsearch` and make an init script.
 I made `/etc/systemd/system/searchd` with the script below and made it executable.
