@@ -8,7 +8,7 @@ abstract: |
  Private BitTorrent trackers are an ideal model to privately and securely share large amounts of data with integrity in a distributed way.
 ---
 
-[![BioTorrents.de tracker logo](logo.full.png)](https://biotorrents.de)
+[![BioTorrents.de tracker logo](logo.png)](https://biotorrents.de)
 
 # Introduction
 
