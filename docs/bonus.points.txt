@@ -1,0 +1,28 @@
+==Overview==
+Bonus Points are BioTorrents.de's currency. They are awarded to users for a wide range of reasons. They can also be spent to help other users or earn personal rewards.
+
+==Earning Bonus Points==
+===Seeding===
+You will be awarded Bonus Points for seeding torrents according to the following formula, per-hour, where [i]n[/i] is the number of torrents you're seeding:
+[align=center][tex]$\left(\sum_{i=0}^n {\frac{\sqrt{\frac{size_{i}}{{1}\text{GiB}}}*1.5^{\frac{seedtime_{i}}{{1}\text{yr}}}}{\text{Max}\left(1,\ \frac{\sqrt{{{seeds_{i}}}+4}}{3}\right)}}\right)^{0.95}$[/tex][/align]
+
+This earning rate will decay proportionally to the amount of Bonus Points you have stocked up. After you have accumulated two months worth of Bonus Points, your daily rate will be reduced by your total amount of Bonus Points over two months worth divided by 60. If your base rate is 100 Bonus Points per day, you will continue earning 100 Bonus Points per day until you have accumulated 6,000 Bonus Points. By the time you have accumulated 9,000 Bonus Points, you will be making 50 Bonus Points per day. You will stop gaining Bonus Points if you have 12,000 Bonus Points stocked up. This is to discourage hoarding and encourage spending.
+
+===Screenshots===
+Torrents with at least [b]4[/b] publications will earn an additional [b]30% Bonus Points/hr[/b]. It's in your best interest to make sure everything you upload or download has enough publications. Don't rely on other people!
+
+===Store===
+Upload credit can be exchanged for Bonus Points by visiting [url=https://oppaiti.me/store.php]the store[/url]. Be careful, and make sure you don't put yourself under your required ratio.
+
+===Artist Bounty===
+If you fill out an artist page with a description, similar artists, and preferably a relevant image you might be able to get some Bonus Points for your effort--as much as 500 Bonus Points at the discretion of staff.
+
+===Wiki Bounty===
+If you write a wiki article, or make large revisions to one, you might be able to earn some Bonus Points for your work. There's no hard maximum for the amount you can earn for an article, but particularly good articles or revisions will earn more Bonus Points.
+
+==Spending Bonus Points==
+===Store===
+You can spend your accumulated Bonus Points by visiting [url=store.php]the store[/url]. There, you can trade your Bonus Points for upload credit, make torrents temporarily freeleech, get yourself some extra invites, or buy some cosmetic badges to display on your profile and on the forums.
+
+===Gifts===
+Bonus Points can also be sent to other users as a gift from their profile page, including an optional message. 10% of your gift will be taken by the system as tax, however you have the option to automatically adjust your gift amount for this tax.

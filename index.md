@@ -8,7 +8,7 @@ abstract: |
  Private BitTorrent trackers are an ideal model to privately and securely share large amounts of data with integrity in a distributed way.
 ---
 
-[![BioTorrents.de tracker logo](logo.png)](https://biotorrents.de)
+[![BioTorrents.de tracker logo](logo.black.png)](https://biotorrents.de)
 
 # Introduction
 
@@ -345,7 +345,17 @@ I downloaded [What.CD's Ocelot](https://github.com/WhatCD/Ocelot.git) with Git a
 Then I installed the dependencies as below.
 
 ```shell
-apt install automake g++ gcc libboost-dev libboost-iostreams-dev libboost-system-dev libev-dev libmysql++-dev libtcmalloc-minimal4 make
+apt install \
+	automake \
+	g++ \
+	gcc \
+	libboost-dev \
+	libboost-iostreams-dev \
+	libboost-system-dev \
+	libev-dev \
+	libmysql++-dev \
+	libtcmalloc-minimal4 \
+	make
 ```
 
 I performed the ritual of compilation and humbly took the wafer and the wine.
@@ -354,7 +364,11 @@ Note that I needed to run `autoreconf(1)` and manually set the library locations
 ```shell
 cd /tmp/Ocelot/
 autoreconf
-./configure --with-boost-libdir=/usr/lib/x86_64-linux-gnu --with-ev-lib=/usr/lib/x86_64-linux-gnu --with-mysql-lib=/usr/lib/x86_64-linux-gnu
+./configure \
+	--with-boost-libdir=/usr/lib/x86_64-linux-gnu \
+	--with-ev-lib=/usr/lib/x86_64-linux-gnu \
+	--with-mysql-lib=/usr/lib/x86_64-linux-gnu \
+	--with-mysqlpp-lib=/usr/lib/x86_64-linux-gnu
 make
 make install
 ```
