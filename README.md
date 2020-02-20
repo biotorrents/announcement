@@ -1,4 +1,4 @@
-| [![](logo.black.png)	|
+| ![](logo.black.png)	|
 | :---			|
 | [BioTorrents.de tracker logo](https://biotorrents.de) |
 
@@ -9,7 +9,7 @@ Repositories such as those that NCBI develops often serve gigabytes of data over
 BitTorrent enables P2P transfers over UDP and supports RSS polling with automatic downloads. 
 
 Private BitTorrent trackers are an ideal model to privately and securely share large amounts of data with integrity in a distributed way.
-This paper describes my 2019 reimplementation of [the original 2010 BioTorrents site](https://doi.org/10.1371/journal.pone.0010071) with best-of-breed hentai and music tracker software.
+This paper describes my 2019 reimplementation of the [original 2010 BioTorrents site](https://doi.org/10.1371/journal.pone.0010071) with best-of-breed hentai and music tracker software.
 All the links are safe for work.
 
 BitTorrent trackers are kind of like air traffic controllers as the data piecemeal reaches its destination via seeders, who make it available by their own download progress.
@@ -27,7 +27,7 @@ Relevant features of private BitTorrent trackers for biology data include
 If you have a server at your lab or home, and you expect to produce sequence data or bioinformatics studies, I humbly beseech you to host a seedbox.
 It's a BitTorrent client daemon that other peers can reach 24/7 at a consistent port in the ephemeral range.
 
-All peers connect over TCP to [the BioTorrents.de tracker reverse proxy](https://biotorrents.de) on port 443, which then directs peers to form UDP connections at specific ports.
+All peers connect over TCP to the [BioTorrents.de tracker reverse proxy](https://biotorrents.de) on port 443, which then directs peers to form UDP connections at specific ports.
 This mitigates peer discovery leaks (e.g., disable UPnP) and removes traffic deprioritization on filtered ports.
 
 [rTorrent](https://packages.debian.org/sid/rtorrent) and [Transmission](https://packages.debian.org/sid/transmission-daemon) are two good choices for seedbox software.
@@ -62,10 +62,10 @@ server {
 }
 ```
 
-Then from the web interface or on the command line you can create torrents with the private flag `-p` and the announce URL from [the BioTorrents.de upload page](https://biotorrents.de/upload.php).
+Then from the web interface or on the command line you can create torrents with the private flag `-p` and the announce URL from the [BioTorrents.de upload page](https://biotorrents.de/upload.php).
 The upload script sanitizes torrent files so you must download it from the site after uploading it, and open *that* copy in the client.
 
-Please see [an iptables frontend](https://wiki.archlinux.org/index.php/Iptables#Front-ends) or [the OpenBSD pf docs](https://www.openbsd.org/faq/pf/rdr.html) to set up network address translation/port forwarding.
+Please see an [iptables frontend](https://wiki.archlinux.org/index.php/Iptables#Front-ends) or the [OpenBSD pf docs](https://www.openbsd.org/faq/pf/rdr.html) to set up network address translation/port forwarding.
 Note that you don't need the `rdr-to` phrase if you run pf on the seedbox itself.
 Remember to also update your router settings to assign a static IP address to the seedbox and pass torrent traffic to it on the LAN.
 
@@ -106,11 +106,11 @@ Copyright (c) 2008-2016, Sphinx Technologies Inc (http://sphinxsearch.com)
 First I changed the root password on the VPS as soon as it was installed.
 Then I added a zone file to the domain registrar and an rDNS entry to the VPS host.
 
-Germany's DENIC has implemented [the GDPR](https://gdpr-info.eu) for WHOIS queries on [`.de` domains](https://en.wikipedia.org/wiki/.de) since 2018-05-25.
+Germany's DENIC has implemented the [GDPR](https://gdpr-info.eu) for WHOIS queries on [`.de` domains](https://en.wikipedia.org/wiki/.de) since 2018-05-25.
 Greece's FORTH has similar privacy protections on [`.gr` domains](https://en.wikipedia.org/wiki/.gr) but only because the WHOIS server returns a fatal error.
 This seems like an unintended statement on the EU's international relations.
 
-I upgraded Debian 9 to the unstable distribution by [the install FAQ's first method](https://wiki.debian.org/InstallFAQ).
+I upgraded Debian 9 to the unstable distribution by the [install FAQ's first method](https://wiki.debian.org/InstallFAQ).
 Debian unstable is sadly inaccurately named in terms of bugs and uptime.
 I also created `/etc/apt/apt.conf` as below.
 
@@ -124,7 +124,7 @@ The BitTorrent user runs the Gazelle cron jobs and the Ocelot daemon, and owns a
 Then I generated [strong SSH keys](https://wiki.archlinux.org/index.php/SSH_keys#Ed25519) and edited `/etc/sshd/sshd.conf` to deny passphrases and allow tunnelling.
 After keying up the SSH server I added an `rsnapshot(1)` entry for BioTorrents.de on my backup server.
 
-The last relevant setup details include hardening the `/etc/sysctl.conf` defaults, adding `noatime` to `/etc/fstab`, and installing [an `/etc/hosts` file](https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts) that blocks tracking.
+The last relevant setup details include hardening the `/etc/sysctl.conf` defaults, adding `noatime` to `/etc/fstab`, and installing an [`/etc/hosts` file](https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts) that blocks tracking.
 I made `/etc/motd` have [sexy ASCII art](motd) in honor of the Oppaitime hentai tracker admin Spaghetti, who helped me with good advice while I set up the tracker.
 
 
@@ -148,7 +148,7 @@ No other setup was necessary or desired because I already have a mail server.
 
 ## Gazelle and Ocelot
 
-The Oppaitime tracker develops [a security hardened fork](https://git.oppaiti.me/Oppaitime/Gazelle) of the late What.CD's [Gazelle](https://github.com/WhatCD/Gazelle) software.
+The Oppaitime tracker develops a [security hardened fork](https://git.oppaiti.me/Oppaitime/Gazelle) of the late What.CD's [Gazelle](https://github.com/WhatCD/Gazelle) software.
 The PHP, MySQL, and Sphinx–powered web interface returns data on What.CD's [Ocelot](https://github.com/WhatCD/Ocelot), a daemon written in C++ that manages the peer swarm's activity.
 First I made the necessary files and folders.
 
@@ -193,14 +193,14 @@ There's no reason to take MD5 hashes of files on disk, as in What.CD's guide, th
 
 ## Nginx and Certbot
 
-I installed Nginx and Certbot according to [the Certbot guide](https://certbot.eff.org/lets-encrypt/debiantesting-nginx).
+I installed Nginx and Certbot according to the [Certbot guide](https://certbot.eff.org/lets-encrypt/debiantesting-nginx).
 
 I copied the same config schema as on my OpenBSD servers: a bare minimum `/etc/nginx/nginx.conf` that includes each website and a shared security config.
 There were certain inconsistencies such as `www-data` vs. `www` and different socket locations.
 Then I added `certbot renew && systemctl restart nginx` to a daily cron job.
 
-I paid particular attention to [Cipherli.st's security hardened headers](https://cipherli.st) and [the OWASP Secure Headers Project](https://www.owasp.org/index.php/OWASP_Secure_Headers_Project).
-The goal was to achieve a perfect score on [the Qualys SSL server test](https://www.ssllabs.com/ssltest/analyze.html?d=biotorrents.de&s=51.68.175.209&hideResults=on).
+I paid particular attention to [Cipherli.st's security hardened headers](https://cipherli.st) and the [OWASP Secure Headers Project](https://www.owasp.org/index.php/OWASP_Secure_Headers_Project).
+The goal was to achieve a perfect score on the [Qualys SSL server test](https://www.ssllabs.com/ssltest/analyze.html?d=biotorrents.de&s=51.68.175.209&hideResults=on).
 Web server security moves fast so I read grey hat news as part of my security posture.
 
 
@@ -313,7 +313,7 @@ case "$1" in
 esac
 ```
 
-Finally I had to make `/etc/systemd/system/searchd.service` by [the Debian wiki's example](https://wiki.debian.org/systemd/Services).
+Finally I had to make `/etc/systemd/system/searchd.service` by the [Debian wiki's example](https://wiki.debian.org/systemd/Services).
 To enable it on boot I did `systemctl daemon-reload` and `systemctl enable searchd.service`.
 
 ```ini
@@ -335,7 +335,7 @@ This let me manage the Sphinx daemon with standard system tools.
 
 ## Building and installing Ocelot
 
-I downloaded [What.CD's Ocelot](https://github.com/WhatCD/Ocelot.git) with Git and consulted [the readme](https://github.com/WhatCD/Ocelot/blob/master/README.md).
+I downloaded [What.CD's Ocelot](https://github.com/WhatCD/Ocelot.git) with Git and consulted the [readme](https://github.com/WhatCD/Ocelot/blob/master/README.md).
 Then I installed the dependencies as below.
 
 ```shell
@@ -380,7 +380,7 @@ It all began to fall into place even though I had no oysters.
 It was very important to disable `DEBUG_MODE` and `FEATURE_SET_ENC_KEY_PUBLIC` as soon as I registered the admin account!
 Gazelle's 2FA implementation required `qrencode(1)`, so I installed it and enabled 2FA on the admin account.
 
-I configured a client whitelist on the Toolbox page by [the BitTorrent spec's peer ID list](https://wiki.theory.org/index.php/BitTorrentSpecification#peer_id).
+I configured a client whitelist on the Toolbox page by the [BitTorrent spec's peer ID list](https://wiki.theory.org/index.php/BitTorrentSpecification#peer_id).
 The tracker only allows high quality, open source clients at the latest major version.
 Note that LibTorrent 0.1x.y also covers rTorrent/ruTorrent and other clients that use [rakshasa's library](https://github.com/rakshasa/libtorrent).
 
@@ -400,5 +400,5 @@ Ratio rules still apply and members are expected to give back by seeding downloa
 ## Further development
 
 BioTorrents.de is under active development.
-Please see [the Git repo](https://pjc.is/biotorrents/gazelle) for more information.
+[Please see the Git repo](https://pjc.is/biotorrents/gazelle) for more information.
 Besides making the site look and act less like an anime porn tracker, two specific challenges include adding NCBI autocomplete functionality and updating the image proxy to serve DOI numbers via Sci-Hub.
