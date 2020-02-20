@@ -1,14 +1,6 @@
----
-title: Serving P2P biology data on Debian 9 with BitTorrent
-author: Peter J. Collins
-date: 2019-06-14
-keywords: [computer security, molecular sequence data, social media, software design]
-abstract: |
- Efficiently sharing biology data such as DNA, RNA, and protein sequences online is an open problem.
- Private BitTorrent trackers are an ideal model to privately and securely share large amounts of data with integrity in a distributed way.
----
-
-[![BioTorrents.de tracker logo](logo.black.png)](https://biotorrents.de)
+| [![](logo.black.png)	|
+| :---			|
+| [BioTorrents.de tracker logo](https://biotorrents.de) |
 
 # Introduction
 
@@ -81,7 +73,9 @@ Thank you for your interest in this project and for considering a seedbox at you
 It uses minimal CPU and RAM resources, and only intermittent bursts of bandwidth.
 
 
-![BitTorrent protocol data visualization from [Threestory Studio](http://www.threestory.com/projects/project-h)](bittorrent.png)
+| ![](bittorrent.png)	|
+| :---			|
+| BitTorrent protocol data visualization from [Threestory Studio](http://www.threestory.com/projects/project-h) |
 
 # System profile
 
@@ -155,7 +149,7 @@ No other setup was necessary or desired because I already have a mail server.
 ## Gazelle and Ocelot
 
 The Oppaitime tracker develops [a security hardened fork](https://git.oppaiti.me/Oppaitime/Gazelle) of the late What.CD's [Gazelle](https://github.com/WhatCD/Gazelle) software.
-The PHP, MySQL, and Sphinx--powered web interface returns data on What.CD's [Ocelot](https://github.com/WhatCD/Ocelot), a daemon written in C++ that manages the peer swarm's activity.
+The PHP, MySQL, and Sphinx–powered web interface returns data on What.CD's [Ocelot](https://github.com/WhatCD/Ocelot), a daemon written in C++ that manages the peer swarm's activity.
 First I made the necessary files and folders.
 
 ```shell
@@ -392,11 +386,11 @@ Note that LibTorrent 0.1x.y also covers rTorrent/ruTorrent and other clients tha
 
 | Client Name		| Peer ID	|
 | :---			| :---:		|
-| Deluge 1.x.y		| -DE1		|
-| KTorrent 5.x.y	| -KT5		|
-| LibTorrent 0.1x.y	| -lt01		|
-| Transmission 2.xy	| -TR2		|
-| qBittorrent 4.x.y	| -qB4		|
+| Deluge 1.x.y		| `-DE1`	|
+| KTorrent 5.x.y	| `-KT5`	|
+| LibTorrent 0.1x.y	| `-lt01`	|
+| Transmission 2.xy	| `-TR2`	|
+| qBittorrent 4.x.y	| `-qB4`	|
 
 Then I used the Toolbox to configure the forums and flatten the user classes.
 The idea was to take all the fun and exclusivity out of it and to flount the conventions of private media piracy BitTorrent trackers.
@@ -406,5 +400,5 @@ Ratio rules still apply and members are expected to give back by seeding downloa
 ## Further development
 
 BioTorrents.de is under active development.
-Please see [the Git repo](https://git.pjc.is/gazelle/.git/) for more information.
+Please see [the Git repo](https://pjc.is/biotorrents/gazelle) for more information.
 Besides making the site look and act less like an anime porn tracker, two specific challenges include adding NCBI autocomplete functionality and updating the image proxy to serve DOI numbers via Sci-Hub.

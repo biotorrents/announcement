@@ -11,4 +11,6 @@ Please find some thoughts on the philosophy behind the site, who it's useful for
 **The database is valuable.** Besides the expanded validation and formatting
 
 
-## Did BioTorrents fail?
+# Did BioTorrents fail?
+
+No.
