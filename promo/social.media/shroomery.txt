@@ -1,0 +1,25 @@
+Hi guys,
+
+I'm humbled to share with you a website that I've been working on for the last year, that I think fills an important niche in scientific data sharing.
+
+
+[url=http://files.shroomery.org/files/20-10/355971690-logo.black.png][image]http://www.shroomery.org/forums/thumbs/20-10/355971690-thumb_logo.black.png[/image][/url]
+
+
+[url=https://biotorrents.de]BioTorrents.de[/url] is a semi-private torrent tracker where you can download genetic and protein sequences, medical images such as MRIs and X-rays, and the documentation and tools people wrote to work with the data. It uses the familiar Gazelle software so the metadata is really easy to search and the interface is really comfy, like What.cd for genomes instead of music.
+
+The site also has a forum section that's heavily inspired by the old Shroomery vibe. There are places to discuss and learn about lab work, bioinformatics, journal articles, science news, and a marketplace for power users. It's like the advanced mycology board broken out into different sections.
+
+I wrote the site because there are lots of small labs outside of universities who do cool work and find it difficult to collaborate. Often the data is hard to get at, for example, you must know a specific person to ask for access to a Google Drive. There's also something of a divide between wetlab and bioinformatics people.
+
+BioTorrents.de is primarily for community biology labs, independent researchers, interested computer scientists, and open access data volunteers who don't have a big institution behind them. I believe that getting all these people together, and having the data right there to download and study, can galvanize hobby biology and make more people capable of more sophisticated experiments.
+
+Did you know, for example, that in 2017 a group of researchers sequenced 10× more of the kratom genome than ever before, and released it anonymously on BitTorrent to stop big pharma companies from patenting it? That effort inspired me to try the idea again, and of course the Kratom Genome Project's releases are all readily available.
+
+There was a site called BioTorrents that started in 2010, which I think was several years ahead of its time. My own site likewise won't last forever, so one of my priorities is to make it easy for others to restore the metadata, torrent files, and software. I want the site to belong to everyone who contributes to it.
+
+Anyway, please find some screenshots below. If you're interested in the technical details, please [url=https://pjc.is/biotorrents/announcement]read about the technology[/url] and [url=https://pjc.is/biotorrents/gazelle]review the source code[/url].
+
+[url=http://files.shroomery.org/files/20-10/359540147-search.form.half.png][image]http://www.shroomery.org/forums/thumbs/20-10/359540147-thumb_search.form.half.png[/image][/url] [url=http://files.shroomery.org/files/20-10/359540587-torrent.details.half.png][image]http://www.shroomery.org/forums/thumbs/20-10/359540587-thumb_torrent.details.half.png[/image][/url] [url=http://files.shroomery.org/files/20-10/359540953-collections.half.png][image]http://www.shroomery.org/forums/thumbs/20-10/359540953-thumb_collections.half.png[/image][/url] [url=http://files.shroomery.org/files/20-10/359541280-upload.form.half.png][image]http://www.shroomery.org/forums/thumbs/20-10/359541280-thumb_upload.form.half.png[/image][/url]
+
+Please remember that development is in progress, and that Easter is the official launch date. I'm looking at ways to integrate the site more fully with resources such as Sci-Hub, ORCiD author identification, and existing repositories like RefSeq and UniProt.

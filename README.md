@@ -1,5 +1,5 @@
 | ![](logo.black.png)	|
-| :---			|
+| :--			|
 | [BioTorrents.de tracker logo](https://biotorrents.de) |
 
 # Introduction
@@ -32,7 +32,7 @@ This mitigates peer discovery leaks (e.g., disable UPnP) and removes traffic dep
 
 [rTorrent](https://packages.debian.org/sid/rtorrent) and [Transmission](https://packages.debian.org/sid/transmission-daemon) are two good choices for seedbox software.
 I like to [configure the BitTorrent client](https://interviewfor.red/en/torrenting.html) and set a login script to run `transmission-daemon(1)` and other programs.
-rTorrent needs [a standalone web interface](https://wiki.archlinux.org/index.php/RTorrent#Web_interface) and Transmission includes its own.
+rTorrent needs a [standalone web interface](https://wiki.archlinux.org/index.php/RTorrent#Web_interface) and Transmission includes its own.
 
 I like to have the web interface listen on localhost, reverse proxy it through Nginx with TLS, and access it through SSH with a SOCKSv5 proxy.
 Set Firefox to use `localhost:1080` or any unprivileged port and use the `ssh -D 1080` flag when you access the server.
@@ -74,7 +74,7 @@ It uses minimal CPU and RAM resources, and only intermittent bursts of bandwidth
 
 
 | ![](bittorrent.png)	|
-| :---			|
+| :--			|
 | BitTorrent protocol data visualization from [Threestory Studio](http://www.threestory.com/projects/project-h) |
 
 
@@ -386,7 +386,7 @@ The tracker only allows high quality, open source clients at the latest major ve
 Note that LibTorrent 0.1x.y also covers rTorrent/ruTorrent and other clients that use [rakshasa's library](https://github.com/rakshasa/libtorrent).
 
 | Client Name		| Peer ID	|
-| :---			| :---:		|
+| :--			| :--:		|
 | Deluge 1.x.y		| `-DE1`	|
 | KTorrent 5.x.y	| `-KT5`	|
 | LibTorrent 0.1x.y	| `-lt01`	|
