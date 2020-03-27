@@ -1,0 +1,21 @@
+# Torrent Group Description
+
+In [i]S. cerevisiae,[/i] there are five genes that encode [url=https://www.yeastgenome.org/go/4022]alcohol dehydrogenases[/url] involved in ethanol metabolism, ADH1 to ADH5. Four of these enzymes, Adh1p, Adh3p, Adh4p, and Adh5p, reduce acetaldehyde to ethanol during [url=https://www.yeastgenome.org/go/19655]glucose fermentation[/url], while Adh2p catalyzes the reverse reaction of [url=https://www.yeastgenome.org/go/6069]oxidizing ethanol[/url] to acetaldehyde. The five ethanol dehydrogenases (Adh1p, Adh2p, Adh3p, Adh4p, and Adh5p) as well as the bifunctional enzyme Sfa1p are also involved in the production of fusel alcohols during fermentation. Fusel alcohols are end products of amino acid catabolism (of valine, leucine, isoleucine, methionine, phenylalanine, tryptophan, and tyrosine) via [url=https://www.yeastgenome.org/go/947]the Ehrlich pathway[/url] and contribute to the flavor and aroma of yeast-fermented foods and beverages. They may also have physiological roles. For example, exposing cells to isoamyl alcohol, derived from catabolism of leucine, stimulates [url=https://www.yeastgenome.org/go/30447]filamentous growth[/url]. Similarly, other fusel alcohols also stimulate filamentous growth in [i]S. cerevisiae[/i] and biofilm formation in the pathogens [i]Candida albicans[/i] and [i]Candida dubliniensis[/i]. The [url=https://www.yeastgenome.org/go/5829]cytosolic[/url] ADH1 gene product is the major enzyme responsible for converting acetaldehyde to ethanol. Adh1p functions as a tetramer of four identical subunits with each subunit containing two zinc ions; one zinc atom is essential for catalysis and the other is important for the structure of the protein. Although originally thought to be expressed constitutively, [url=https://www.yeastgenome.org/go/122]ADH1 transcription is repressed[/url] when cells are grown on a non-fermentable carbon source such as ethanol or glycerol. [i]S. cerevisiae[/i] cells lacking Adh1p activity grow poorly on glucose under anaerobic conditions and treatment of these cells with a respiratory inhibitor blocks growth completely. Overexpression of ADH1 is able to enhance the formaldehyde resistance of yeast cells.
+
+# Torrent Description
+
+The genetic map is based mainly on data from tetrad analysis of the four meiotic products (ascospores) from individual diploid cells. For any given pair of heterozygous markers in a cross (ABxab), tetrad dissection of the sporulated diploid will result in three types of asci: parentalditype (PD) (AB,AB,ab,ab), nonparentalditype (NPD) (Ab,Ab;aB,aB), andtetratype (T) (AB,Ab,aB,ab). Map distances are calculated by using the relative frequencies of these classes.
+
+
+# DOIs
+
+10.1128/mcb.5.11.3024
+10.1074/jbc.M211914200
+10.1101/gr.3672305
+10.1111/j.1567-1364.2002.tb00116.x
+10.1073/pnas.78.7.4226
+10.1046/j.1432-1033.2002.03114.x
+10.1128/AEM.02625-07
+10.1016/0006-291x(76)90673-2
+10.1042/bj2870361
+10.1016/j.femsyr.2004.06.011

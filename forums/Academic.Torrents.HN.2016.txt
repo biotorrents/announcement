@@ -1,0 +1,653 @@
+WhitneyLand on Aug 29, 2016 [-]
+
+API suggestions:
+
+1). Don't use hard coded values for types
+
+>GET /apiv2/entries?cat=6  -- List entries that are datasets
+
+>GET /apiv2/entries?cat=5  -- List entries that are papers
+
+These could be written as: /apiv2/entries/datasets /apiv2/entries/papers
+
+2). You may not need path elements like entries, entry, collection, and collection name. For example further simplification would leave
+
+  /datasets
+
+  /papers
+
+3). Don't use capitals like this, switch to lowercase: /apiv2/entry/INFOHASH
+
+4). Use HTTP verbs in a standard, semantic way. For example this
+
+  POST /apiv2/collection -- create an collection
+
+  POST /apiv2/collection/collection-name/update
+
+  POST /apiv2/collection/collection-name/delete
+
+  POST /apiv2/collection/collection-name/add
+
+  POST /apiv2/collection/collection-name/remove
+
+This could all be collapsed into one form and would in turn be more familiar to developers.
+
+
+jnbiche on Aug 29, 2016 [-]
+
+I strongly agree with these suggestions, if the creator(s) happen to read this.
+
+And while these suggestions may seem like nitpicking, they are not.
+
+While not everything around REST APIs is entirely standard, there's a great deal of agreement about proper resource naming and use of HTTP verbs. If you follow these widely-used standards, not only will developers find it much easier to interact with your API, but also there is a lot of tooling and client libraries out there built specifically to work with APIs that use HTTP verbs and URIs in the standardized ways.
+
+
+iamjeff on Aug 29, 2016 [-]
+
+Hi. I found this site late last night while looking for material for a hobby project. Really, really awesome site.
+
+I also found the creators here [1] and here [2]...maybe you can help shoot them an e-mail so that they can acknowledge a lot of the praise on this thread and the flood of helpful suggestions. Additional contributors can also be found here [3] as well as related publications/presentations [4] including a massively interesting Reddit discussion [5].
+
+[1]- Joseph Paul Cohen https://twitter.com/josephpaulcohen joseph@josephpcohen.com http://josephpcohen.com/w/ https://www.linkedin.com/in/josephpcohen https://github.com/ieee8023 https://www.reddit.com/user/ieee8023
+
+[2]- Henry Z Lo henryzlo@cs.umb.edu https://www.linkedin.com/in/henry-z-lo-6a11461b https://github.com/henryzlo
+
+[3] http://academictorrents.com/about.php
+
+[4]- Academic Torrents: A Community-Maintained Distributed Repository (http://dl.acm.org.sci-hub.cc/citation.cfm?id=2616528&dl=ACM&...) - Academic Torrents - Simple Pitch (https://docs.google.com/presentation/d/1JC2d1g9U6HaenGSn_Xvk...) - Academic Torrents: Scalable Data Distribution (http://arxiv.org/pdf/1603.04395v1.pdf)
+
+[5]- I have every publicly available Reddit comment for research. ~ 1.7 billion comments @ 250 GB compressed. Any interest in this? (https://www.reddit.com/r/datasets/comments/3bxlg7/i_have_eve...)
+
+
+iamjeff on Aug 29, 2016 [-]
+
+Looks like I spoke too soon. Here is one of the founders on HN as well: https://news.ycombinator.com/user?id=ieee8023.
+
+
+NeutronBoy on Aug 30, 2016 [-]
+
+Question about your first point - doesn't it depend on the use case?
+
+What would happen if I wanted to get a list of datasets and papers? (maybe in this case it's nonsensical, but it's a problem with some other APIs I've used and I've never figured a good way to work around it)
+
+GET /apiv2/entries?cat=5&cat=6 vs 2 separate requests and client logic to combine results?
+
+
+WhitneyLand on Aug 30, 2016 [-]
+
+1) Does all this depend on use case? Yes, heavily. Best practices are needed, but final design choices are tailored.
+
+2) I don't like dup query params, it's not well defined: http://stackoverflow.com/questions/1746507/authoritative-pos...
+
+For returning multiple types at once there are a few common strategies.
+
+For related types some APIs offer an "include" or "embed" approach like this: http://www.vinaysahni.com/best-practices-for-a-pragmatic-res...
+
+Another approach is to support a query syntax for items, where items is a container record for multiple possible types.
+
+If a certain multi-type scenario super common you may want build the concept into the API itself as basic functionality.
+
+Again, your final choice should be as simple as possible but no simpler, taking into account ease of use, performance, etc.
+
+
+Senji on Aug 30, 2016 [-]
+
+GET /apiv2/entries?cat=datasets+papers
+
+
+microcolonel on Aug 29, 2016 [-]
+
+I wouldn't get too dogmatic about REST. I've been working with it for years, and it seems that every time somebody makes a semantic HTTP API, they run into a URI length limit at some point.
+
+
+dsl on Aug 29, 2016 [-]
+
+Every semantic API ends up with an overriding parameter like _action=PUT because well intentioned API developers don't know that broken middleboxes exist on the internet until their beautiful creation collides with reality.
+
+
+jnbiche on Aug 30, 2016 [-]
+
+Most REST API frameworks that I'm aware of (e.g., Django REST framework) easily allow you to accept either the semantic HTTP actions, or an action parameter in the query string. Some also let you fall back to the `X-HTTP-Method-Override` header. I think these are even on by default in many frameworks. So fallback is pretty easy if you're using one of those, and even if you're not, it's still just an extra line or two in your routing, plus a little extra error handling in your client for error code 405.
+
+I do agree that you should have a fallback, but for reference, I've been consuming semantically-defined REST APIs for 4-5 years now, and I've never run into this problem. I agree with you that it can happen because of firewalls, etc, but it must be incredibly rare. Maybe in some corporate environments, for the usual BS reasons.
+
+Also, if you use SSL/TLS, you won't run into this problem unless you're being MITM'd, like in some corporate environments (because no one in between server and client can tell what HTTP method is used). Use of SSL/TLS is probably why I haven't run into this in recent years.
+
+
+WhitneyLand on Aug 30, 2016 [-]
+
+graceful degradation is a good thing. beautiful path can still be used by a lot of people.
+
+
+tombert on Aug 29, 2016 [-]
+
+I'm pretty glad that torrents have started to break out of the "it's only for warez" stereotype. It's a useful technology, regardless of what made it popular.
+
+
+NelsonMinar on Aug 29, 2016 [-]
+
+That happened around 2008. Or even earlier; Linux distros were being distributed via Bittorrent back in 2006. https://torrentfreak.com/popular-linux-distro-torrents/
+
+
+swiley on Aug 29, 2016 [-]
+
+When I was younger I would only download these via bittorent because our connection was extremely unreliable and bittorent was always restartable.
+
+
+rck404 on Aug 29, 2016 [-]
+
+Even now I do the same. In india direct downloads are slightly slower. I guess it's to do with the mirror location or something else. Torrent makes it much faster
+
+
+kochthesecond on Aug 29, 2016 [-]
+
+Probably because tcp or http or both are throttled somewhere. Bit torrent uses any port and lots of connections so throttling is much less effective.
+
+
+mads on Aug 29, 2016 [-]
+
+Same in China. The Chinese firewall throttles TCP connections making direct downloads very slow. Not uncommon to have an unbearable slow connection while browsing web pages and then when starting a torrent download, you immediately get 2 Megabytes per second download speeds here.
+
+A tip is to use a tool like axel (https://github.com/eribertomota/axel) to do direct downloads. This will usually speed it up.
+
+
+voltagex_ on Aug 30, 2016 [-]
+
+>My name is Eriberto and I am not a C developer. I imported Axel from its old repository[1] to GitHub (the original homepage and developers are inactive)
+
+Uh oh. Thanks to the repo owner for updating the README, but that's not a good situation.
+
+I'd also like to suggest aria2c for this purpose: https://aria2.github.io/
+
+
+tombert on Aug 29, 2016 [-]
+
+Oh, I know that programmers and hackers and whatnot knew torrents were cool; I'm talking about non-technical people.
+
+For example, until fairly recently, if I mentioned a "torrent" to my non-technical mom, she would assume I meant ThePirateBay or something like that. Nowadays, she knows it as just another means to download files.
+
+
+NelsonMinar on Aug 29, 2016 [-]
+
+Not sure Academic Torrents is the best example of a use of torrents for "non-technical people".
+
+
+tombert on Aug 29, 2016 [-]
+
+That's a fair point; I guess what I was trying to get at is that when I worked for NYU, I think it would have been an incredibly tough sell to use torrents in any capacity, because of the stigma of piracy. However, I think if I were to pitch it now, there would be serious consideration.
+
+
+revelation on Aug 29, 2016 [-]
+
+Actually, World of Warcraft was released in 2004 and I think it used BitTorrent for patch distribution from the beginning.
+
+So very legitimate uses date quite some time back (as you would expect).
+
+
+jamesrcole on Aug 29, 2016 [-]
+
+I think the grandparent was talking about the general perception of torrenting
+
+
+PhasmaFelis on Aug 30, 2016 [-]
+
+None of that changed the popular stereotype. And Linux distros, etc. have never been more than a fraction of the volume of warez torrents.
+
+
+gens on Aug 29, 2016 [-]
+
+I remember a game called "GunZ" (the 2005 one, i think) internally using torrents to propagate updates. But it was a long time ago.
+
+
+dansze on Aug 29, 2016 [-]
+
+A huge number of games used torrents for patching since around that time, notably in the MMO scene. WoW and every Nexon game come to mind. AFAIK the Battle.net launcher still downloads updates via torrent.
+
+
+dsl on Aug 29, 2016 [-]
+
+The Blizzard updater is actually a very cool download utility, worth hacking/poking at.
+
+AFAIK it pioneered the concept of "web seeds", using HTTP GETs with a Range: header to download specific chunks from a CDN that were not healthy/available in the swarm.
+
+
+Houshalter on Aug 29, 2016 [-]
+
+I saw a game do that recently. It makes a lot of sense to use torrents and reduce bandwidth on their servers.
+
+
+tombert on Aug 29, 2016 [-]
+
+I completely forgot about GunZ doing that. I guess I was wrong; torrents have been taken seriously for awhile :D
+
+
+radarsat1 on Aug 29, 2016 [-]
+
+I wish it was use more for distributing Linux package updates, a la DebTorrent.
+
+https://wiki.debian.org/DebTorrent
+
+This could take off it only a big player like Ubuntu pushed it. I don't see why we depend on a set of centralized servers for a bunch of files that a huge number of people download on a very regular basis.
+
+And yet, the idea has been stagnant for years.
+
+Edit: By which I mean, it works, but not enough people use it.
+
+
+rakoo on Aug 29, 2016 [-]
+
+It's all listed in your link, but the biggest reason is that Bittorrent was inherently built to distribute static content, and the packages is an ever-changing list. Which means that you'd have upstream servers constantly calculating new torrent files and distributing them. Moreover Bittorrent makes it real easy for an observer to know what packages you're installing, and thus what version you have.
+
+See this alternative that uses similar idea but not real Bittorrent, they worked around the 1st problem: http://www.camrdale.org/apt-p2p/
+
+
+radarsat1 on Aug 29, 2016 [-]
+
+So not entirely stagnant ;)
+
+I still don't see why Ubuntu/Debian/et al don't take this (or something like it) up in a more official manner. I can see why it's not a default of course, but it could be made a question during installation for example.
+
+An additional benefit would be that you'd be able to source packages from machines on your local network, with fallback to the internet, and it would all be pretty much automatic and configuration-free.
+
+
+rakoo on Aug 29, 2016 [-]
+
+I'm pretty sure the security issue (Everybody knows you have old packages) is a good point against this system, but it's true, I'd love to see this system more widespread.
+
+For the local network part at least, it's really not that complicated to implement, all you have to do is to listen for announces on the network and ask those peers before asking remotely; there is a standard example for archlinux in pacserve (http://xyne.archlinux.ca/projects/pacserve/) with my own very crude reimplemantation (https://github.com/rakoo/paclan)
+
+
+ashitlerferad on Aug 30, 2016 [-]
+
+apt-p2p and debtorrent are entirely dead. The person who created them seems to be MIA from Debian. The bootstrap nodes are dead. Both packages are orphaned. apt-p2p will not be in the next release of Debian and debtorrent was removed from the last release of Debian.
+
+
+tombert on Aug 29, 2016 [-]
+
+I totally agree; what really bothers me about current OS's is that they all depend on something centralized, so if, for example, Canonical went broke, I wouldn't be able to install new packages on my Ubuntu laptop.
+
+I'm aware that you can swap out the PPAs as needed, but I would really like something distributed and decentralized.
+
+
+metaphor on Aug 29, 2016 [-]
+
+Agreed...although it is rather ironic that "CrackStation's Password Cracking Dictionary"[1] tops their list of most downloaded by a respectable 9% over 2nd most downloaded "Arizona State University Twitter Data Set"[2].
+
+[1] http://academictorrents.com/details/fd62cc1d79f595cbe1de6356... [2] http://academictorrents.com/details/2399616d26eeb4ae9ac3d05c...
+
+
+teej on Aug 29, 2016 [-]
+
+At least back in 2010, Facebook and Twitter were both reportedly using torrents to do code deploys.
+
+https://blog.twitter.com/2010/murder-fast-datacenter-code-de...
+
+https://torrentfreak.com/facebook-uses-bittorrent-and-they-l...
+
+
+vesinisa on Aug 29, 2016 [-]
+
+Are you serious? This is the original purpose of BitTorrent. It was not invented as a "warez technology", but as a way for service providers to save on bandwidth costs when serving huge files. Back when BitTorrent spec was written hosting a collection of large datasets like this meant paying thousands of bucks in hosting expenses, making it prohibitively expensive for most independent developers.
+
+
+rck404 on Aug 30, 2016 [-]
+
+Torrents and mesh networks were breaking out to be the future of internet during mid and late 90s (Also why Skype was P2P and why it was successfull). I'm not sure what happened to it though.
+
+
+kilotaras on Aug 30, 2016 [-]
+
+Torrent (or p2p in general) when used for distribution a la Blizzard can be a win-win-win scenario if setuped correctly.
+
+1. Consumers can get higher speed in ISP network.
+
+2. ISPs get lower external bandwith usage
+
+3. Lower resource usage for distributor.
+
+Relevant HN discussion - https://news.ycombinator.com/item?id=12380797
+
+
+paavokoya on Aug 29, 2016 [-]
+
+And yet, Comcast still illegally throttles torrent traffic..
+
+
+sametmax on Aug 29, 2016 [-]
+
+Yes. It should be built in in browsers.
+
+
+yread on Aug 29, 2016 [-]
+
+Opera used to have it, but it was much slower than a dedicated client
+
+
+adamnemecek on Aug 29, 2016 [-]
+
+Isn't this technically warez?
+
+
+apetresc on Aug 29, 2016 [-]
+
+How so? It's meant to be used by researchers distributing the datasets for their own papers. (Notwithstanding the fact that people seem to already be uploading textbooks/lectures, which seems against the stated intent).
+
+
+adamnemecek on Aug 29, 2016 [-]
+
+Some of the articles seem to be journal articles. Don't get me wrong, I'm not against it, but isn't this partially what Aaron Swartz was indicted for?
+
+
+swang on Aug 29, 2016 [-]
+
+Since it isn't illegally acquired and distributed software, no.
+
+
+rakoo on Aug 29, 2016 [-]
+
+If only WebTorrent (https://github.com/feross/webtorrent) worked with standard bittorrent protocol instead of a custom one on top of WebRTC, we would have live access to all the papers and "displayable" data directly instead of firing up a torrent downloader just for a small file.
+
+
+sktrdie on Aug 29, 2016 [-]
+
+I don't think you understand how WebTorrent works. WebTorrent in fact works with the regular BitTorrent network if you run it from node, and falls back to use WebRTC when used in the browser.
+
+So you can seed those torrents directly in the browser with something like instant.io.
+
+
+rakoo on Aug 29, 2016 [-]
+
+I do know how WebTorrent works. The problem is that it creates a completely parallel network of nodes, which on the surface happen to exchange the same framing of messages, so:
+
+- When WebTorrent runs on the standard bittorrent network from node, that doesn't change anything: it's still not available from the browser.
+
+- When WebTorrent runs on the WebRTC network through instant.ion or anything else, it will only work if somebody else is also seeding the same torrent in their browser. Which they can only have in the browser if they first got it somewhere else. Oh and I'm willing to bet that none of the nodes who currently have the content (ie on the bittorrent network) also share it on the WebTorrent network.
+
+I don't expect classic bittorrent peers to ever implement the mess that is WebRTC just to accommodate browsers, unfortunately.
+
+
+mtgx on Aug 29, 2016 [-]
+
+I think the problem lies with the browser vendors, who aren't implementing the bittorrent protocol in the browser.
+
+If WebTorrent were to do that itself, it would have to become a "plugin" rather than just an extension.
+
+So start asking Mozilla/Google to implement the bittorrent protocol in the browser (or even better, implement IPFS directly, as that's a more wholesome technology specifically made for the browser).
+
+
+the8472 on Aug 29, 2016 [-]
+
+>  I think the problem lies with the browser vendors, who aren't implementing the bittorrent protocol in the browser.
+
+browser vendors shouldn't have to implement it. they should expose posix-like APIs (bsd sockets, file IO) or process management+ipc via plain pipes (talk to native bittorrent client) so it could be provided through an extension.
+
+The problem with browsers is that they create a backwards-incompatible API stack. This is understandable for web content. Not so for extensions.
+
+
+forgotpwtomain on Aug 29, 2016 [-]
+
+Webtorrent on Node talks to both types of peers.
+
+
+nathcd on Aug 29, 2016 [-]
+
+That's not quite correct. From https://github.com/feross/webtorrent-hybrid:
+
+> In node.js, the webtorrent package only connects to normal TCP/UDP peers, not WebRTC peers.
+
+That's why there's this webtorrent-hybrid client which runs a hidden electron process to communicate with WebRTC peers and normal TCP/UDP peers. According to the readme, there's (understandably; it's running chromium in the background) a lot of overhead with this method so they're working toward a non-electron version of WebRTC in Node.
+
+
+danso on Aug 30, 2016 [-]
+
+So, what are the rights and licenses for this data? I see that one of them is Yelp photo data from a Kaggle contest [0]. Yelp distributes another Academic data set, but you have to fill out a form and agree to their TOS [1]. So they're OK with the data being available like this?
+
+Another random datapoint: When EdX/Harvard released a dataset showing how students performed/dropped out, I uploaded a copy to my S3 to mirror and linked to it from HN. I got a polite email the next day asking for it to be taken down. Academics are (rightfully, IMO) protective of their data and its distribution (particularly its attribution).
+
+One thing I would love to see on here is stuff from ICPRS, such as its mirror of the FBI's National Incident-Based Reporting System [2]. As far as I can tell, it's free for anyone to download after you fill out a form. But it also should be free to distribute in the public domain, but for all I know, ICPSR has an agreement with the FBI to only distribute that data with an academic license.
+
+(The FBI website has the data in aggregate form, but not the gigabytes that ICPSR does)
+
+[0] http://academictorrents.com/details/19c3aa2166d7bfceaf3d76c0...
+
+[1] https://www.yelp.com/dataset_challenge/dataset
+
+[2] https://www.icpsr.umich.edu/icpsrweb/NACJD/NIBRS/
+
+
+edraferi on Aug 29, 2016 [-]
+
+How does this compare to IPFS (https://ipfs.io/)?
+
+That project maintains a number of archival datasets, including arXiv: https://ipfs.io/ipfs/QmZBuTfLH1LLi4JqgutzBdwSYS5ybrkztnyWAfR...
+
+Seems like an opportunity to combine efforts.
+
+
+wodenokoto on Aug 29, 2016 [-]
+
+A lot of these "data sets" appears to be coursera courses. I'm not sure if those are legal to redistribute. It also clutters the browse function since a lot of results aren't data sets
+
+
+Inthenameofmine on Aug 29, 2016 [-]
+
+Archive.org is now legally providing the coursera videos. So it should be legal to distribute this way as well.
+
+
+ieee8023 on Sept 1, 2016 [-]
+
+This is fixed! We added a new category! http://academictorrents.com/browse.php?cat=7
+
+
+babak_ap on Aug 29, 2016 [-]
+
+Anyone looking for Wireless Data, I suggest taking a look at: http://crawdad.org/ and http://www.cise.ufl.edu/~helmy/MobiLib.htm#traces
+
+
+_lpa_ on Aug 29, 2016 [-]
+
+I like this idea! In my research we deal with relatively large amounts of sequence data, all of which needs to be associated with geo (https://www.ncbi.nlm.nih.gov/gds/). While geo is in many ways a good thing, it is not the most pleasant to use - I would love it if we could use something like torrents instead.
+
+I feel like there is a danger, however, that using torrents would facilitate the thousands of nonstandard (often redundant) formats bioinformaticians seem to create.
+
+
+jakub_h on Aug 29, 2016 [-]
+
+I'm wondering if torrents as such are actually useful for this. I'd figure some kind of virtual file system (perhaps based on BitTorrent) would be very useful. You'd simply pass a file path to an open() routine in your scientific code and data would get opened transparently. You currently have this with URLs and HTTP but there's no useful caching or data distribution.
+
+
+seanp2k2 on Aug 29, 2016 [-]
+
+You might like https://tahoe-lafs.org/trac/tahoe-lafs/browser/trunk/docs/ab... , https://urbit.org/docs/using/filesystem/ , or https://ipfs.io
+
+BTSync and SyncThing are also tools to do this, and I'm sure there are FUSE things to work with BT and block chains ("bittorrent fuse" google results look promising).
+
+
+espadrine on Aug 29, 2016 [-]
+
+With the same principles, http://infinit.sh/ adds security and editability to the mix.
+
+
+jakub_h on Aug 29, 2016 [-]
+
+Lots of interesting things to read, thank you! (To the others as well.)
+
+
+zielmicha on Aug 29, 2016 [-]
+
+IPFS (https://ipfs.io) does that.
+
+
+oscargrouch on Aug 30, 2016 [-]
+
+Magnet links from torrents already do this. You just need to have the SHA1 reference of the torrent, working effectively as a url, to load the metadata, and then the files described by the metadata payload.
+
+The P2P nature of the network then help the descentralization of sources, populating several clones of the dataset.
+
+
+rakoo on Aug 29, 2016 [-]
+
+If you have the torrent file, you can use one of the things that mount them as virtual file systems, like btfs (https://github.com/johang/btfs).
+
+
+Eridrus on Aug 29, 2016 [-]
+
+Filesystems have distribution problems. You don't always have permissions to install a new filesystem.
+
+
+rkda on Aug 29, 2016 [-]
+
+You might also be interested in dat. They're trying to solve this problem as well.
+
+http://dat-data.com/
+
+"Dat is a decentralized data tool for distributing data small and large."
+
+
+degenerate on Aug 29, 2016 [-]
+
+I already knew about Academic Torrents, but didn't know about Kaggle, which was linked[1] from one of the 'popular' data sets on AT: https://www.kaggle.com/c/yelp-restaurant-photo-classificatio...
+
+It looks like one of those logo-design-competition-sites, but for big data. Anyone compete in one of these?
+
+[1]: http://academictorrents.com/details/19c3aa2166d7bfceaf3d76c0...
+
+
+WhitneyLand on Aug 29, 2016 [-]
+
+It's a great initiative. One more step to help bring science collaboration into the modern Internet world.
+
+How much data do you have? How much storage do you project is needed? I'm wondering how practical it would have been to use centralized storage, which has its own advantages.
+
+
+xchaotic on Aug 30, 2016 [-]
+
+Is there anything preventing the abuse of this systems to share copyrighted content? Just call it "Population.Data.torrent" where the actual data is a movie?
+
+
+arxpoetica on Aug 29, 2016 [-]
+
+How does this compare with, say, noms? https://github.com/attic-labs/noms
+
+
+aboodman on Aug 30, 2016 [-]
+
+Several immediate things come to mind:
+
+- this is a mechanism for sharing files and directories (e.g., zipped csv files), whereas noms defines its own structured data model that is much more granular
+
+- noms has versioning built-in, you can track the history of a particular dataset
+
+- this is firmly based on bittorrent. you could maybe run noms on top of bittorrent, but it's more intended to be run like git, where you talk directly to a server that you want to collaborate with
+
+
+amai on Aug 30, 2016 [-]
+
+See also https://www.globus.org/.
+
+
+jakeogh on Aug 29, 2016 [-]
+
+Similar project: http://911datasets.org
+
+
+danielmorozoff on Aug 29, 2016 [-]
+
+This is fantastic. I am so glad someone built this.
+
+
+Philipp__ on Aug 29, 2016 [-]
+
+This is amazing! Thank you for sharing this!
+
+
+mtgx on Aug 29, 2016 [-]
+
+.com? Is that wise? I imagine the domain will be seized as soon as the site becomes popular enough. They should at least have some contingency plan to deal with that.
+
+
+turc1656 on Aug 29, 2016 [-]
+
+Their content is not illegal whatsoever. They are not like Sci-hub where the content is actually owned by someone else. On Academic Torrents, the submissions are made by people who have chosen to share their work on this platform rather than submitting to an academic journal.
+
+
+aab0 on Aug 29, 2016 [-]
+
+Academic journals* rarely host large datasets (it's fairly unusual to even see some PDF supplements with vital summaries or results), and if you want to share data >10MB, you're mostly stuck doing it yourself through your own website or some institution's, or not sharing it at all.
+
+Also, academic datasets aren't free of copyright concerns. Consider the famous Imagenet dataset for image classification. It's made of a million images pulled from Google Images. Did they get each photographs' creators' permission for such unlimited redistribution? Of course not. But there's no way the 'implied license' of posting a photo online extends that far... Like so much of the Internet, it's only possible in the absence of enforcement of copyright law.
+
+* which is particularly frustrating because academic publishers make such enormous profits and hosting large datasets is exactly the sort of thing they should be doing if they were remotely interested in supporting science rather than making more money
+
+
+ORioN63 on Aug 29, 2016 [-]
+
+Torrents don't mean illegal content.
+
+
+sandworm101 on Aug 29, 2016 [-]
+
+In his defence, it doesn't really matter whether the content is legal or not. There are people out there who see the torrents as evil. These people have political power and have been known to disrupt and seize .com domains on the scantiest of evidence. A more resilient tld would be a good idea.
+
+
+hueving on Aug 29, 2016 [-]
+
+Do you have an example of a domain being seized for hosting legitimate torrents?
+
+
+Ianvdl on Aug 29, 2016 [-]
+
+Why? Nothing indicates that this is illegal?
+
+
+angusp on Aug 29, 2016 [-]
+
+If it is as they claim well academically supported, you'd assume they'd be easily able to get a subhuman on someone's .edu or.ac.uk or whatever
+
+
+jedanbik on Aug 29, 2016 [-]
+
+I believe a .org would be most appropriate here.
+
+Thinking about http://opendap.org/node/305 for context.
+
+[What is OPeNDAP: http://opendap.org/about]
+
+
+ieee8023 on Aug 29, 2016 [-]
+
+We have academictorrents.org too!
+
+
+iamjeff on Aug 29, 2016 [-]
+
+Hi Mr. Cohen (?). Thanks for taking the time to make this publicly available.
+
+
+ieee8023 on Aug 30, 2016 [-]
+
+Dr. Cohen! But I don't care about titles. Thanks for posting about it! Do you know a hacker news post launched the site in 2014? I was chatting about it at an event in Boston and someone posted it on here and it went crazy. The machines we had hosting data had their 20Mbps connections maxed out for weeks. Now we are prepared and it's just another day!
+
+Here is one of the plots from 2014: https://i.imgur.com/Ecr44AZ.png
+
+
+iamjeff on Aug 30, 2016 [-]
+
+Woah! That screengrab is a mess at that tail end- massive traffic, not to mention that this went on for weeks. Regardless, this is an amazingly useful tool that a n00b like myself finds useful(going forward). Thank you, Daktari (Swahili for "doctor").
+
+
+mdda on Aug 29, 2016 [-]
+
+PostDocs may have a bad rap, but 'subhuman' is going a bit far...
+
+
+privong on Aug 29, 2016 [-]
+
+>  PostDocs may have a bad rap, but 'subhuman' is going a bit far...
+
+That may have been an autocorrect "correction" of the word "subdomain".
+
+
+ieee8023 on Aug 29, 2016 [-]
+
+We have not had an issue since 2013. All the content "must be legal to share" as stated on our upload page.
