@@ -1,5 +1,5 @@
-| ![](logo.black.png)	|
-| :--			|
+| ![](pictures/logo.black.png)	|
+| :--				|
 | [BioTorrents.de tracker logo](https://biotorrents.de) |
 
 # Introduction
@@ -126,7 +126,7 @@ Then I generated [strong SSH keys](https://wiki.archlinux.org/index.php/SSH_keys
 After keying up the SSH server I added an `rsnapshot(1)` entry for BioTorrents.de on my backup server.
 
 The last relevant setup details include hardening the `/etc/sysctl.conf` defaults, adding `noatime` to `/etc/fstab`, and installing an [`/etc/hosts` file](https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts) that blocks tracking.
-I made `/etc/motd` have [sexy ASCII art](motd) in honor of the Oppaitime hentai tracker admin Spaghetti, who helped me with good advice while I set up the tracker.
+I made `/etc/motd` have [sexy ASCII art](documents/motd) in honor of the Oppaitime hentai tracker admin Spaghetti, who helped me with good advice while I set up the tracker.
 
 
 ## Core networking
@@ -401,5 +401,5 @@ Ratio rules still apply and members are expected to give back by seeding downloa
 ## Further development
 
 BioTorrents.de is under active development.
-[Please see the Git repo](https://pjc.is/biotorrents/gazelle) for more information.
+[Please see the Git repo](/biotorrents/gazelle) for more information.
 Besides making the site look and act less like an anime porn tracker, two specific challenges include adding NCBI autocomplete functionality and updating the image proxy to serve DOI numbers via Sci-Hub.
