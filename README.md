@@ -2,6 +2,13 @@
 | :--				|
 | [BioTorrents.de tracker logo](https://biotorrents.de) |
 
+# Launch ⛵
+
+**[BioTorrents.de](https://biotorrents.de) officially launched on Easter Monday 2020.**
+Having an anniversary whose date changes every year appeals to me.
+The freeleech days are on the solstices and equinoxes.
+
+
 # Introduction
 
 Efficiently sharing biology data such as DNA, RNA, and protein sequences online is an open problem.
@@ -24,7 +31,7 @@ Relevant features of private BitTorrent trackers for biology data include
 
 # How to host a seedbox
 
-If you have a server at your lab or home, and you expect to produce sequence data or bioinformatics studies, I humbly beseech you to host a seedbox.
+If you have a server at your lab or home, and you expect to produce sequence or imaging data, or bioinformatics toolkits, I humbly beseech you to host a seedbox.
 It's a BitTorrent client daemon that other peers can reach 24/7 at a consistent port in the ephemeral range.
 
 All peers connect over TCP to the [BioTorrents.de tracker reverse proxy](https://biotorrents.de) on port 443, which then directs peers to form UDP connections at specific ports.
@@ -46,7 +53,7 @@ Note that rTorrent itself runs in a tmux window.
 ```nginx
 # Take note of http://wiki.nginx.org/Pitfalls
 server {
-	listen      443 ssl;
+	listen      443 ssl http2;
 	server_name torrents.foo.com;
 
 	ssl_certificate     /etc/ssl/torrents.foo.com.crt;
@@ -55,9 +62,11 @@ server {
 	access_log off;
 	error_log  /var/log/nginx/torrents.foo.com-error.log;
 
-	# https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy
+	# https://nginx.org/en/docs/http/ngx_http_proxy_module.html
 	location / {
-		proxy_pass http://localhost:5000;
+		proxy_pass       http://localhost:5000;
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
 	}
 }
 ```
@@ -73,7 +82,7 @@ Thank you for your interest in this project and for considering a seedbox at you
 It uses minimal CPU and RAM resources, and only intermittent bursts of bandwidth.
 
 
-| ![](bittorrent.png)	|
+| ![](pictures/bittorrent.png)	|
 | :--			|
 | BitTorrent protocol data visualization from [Threestory Studio](http://www.threestory.com/projects/project-h) |
 
@@ -147,6 +156,43 @@ I installed OpenSMTPd and confirmed that PHP could send mail.
 No other setup was necessary or desired because I already have a mail server.
 
 
+## Separating out system users
+
+BioTorrents.de's infrastructure has many parts besides a website, such as
+- Ocelot the BitTorrent tracker,
+- Sphinx the search engine,
+- MariaDB the database,
+- IRC and bots, and
+- DNS, email, etc.
+
+Whever possible, BioTorrents.de uses dedicated system users to control useland elements.
+This helps keep compilation files, GitHub repos, and other miscellaneous software organized.
+It also adds a nice security benefit because, e.g., IRC can't kill the tracker.
+
+**Website.**
+The BioTorrents user owns the production website files.
+It also runs the Gazelle cron jobs (peerupdate and schedule).
+
+**Tracker.**
+The Ocelot user has simple launchers for production and development instances.
+These run on different ports and connect to different databases.
+
+**IRCd.**
+The IRCd user runs the IRC network and the auto-restart cron job.
+
+**Hermes.**
+The Hermes user is the IRC sitebot, subject to change.
+
+**BioNet.**
+The BioNet user will run a BioNet node when production code is ready.
+
+Having so many users, it's essential to lock down SSH access.
+I set `PasswordAuthentication no` and an `AllowUsers` whitelist in `/etc/ssh/sshd_config`.
+
+As a nicety, I put `export PS1='%n%# '` in each user's `.zprofile` so I can see who I am at a glance.
+The vim configs are also the same minimal convenience as I'm used to, color ls in `.zshrc`, etc.
+
+
 ## Gazelle and Ocelot
 
 The Oppaitime tracker develops a [security hardened fork](https://git.oppaiti.me/Oppaitime/Gazelle) of the late What.CD's [Gazelle](https://github.com/WhatCD/Gazelle) software.
@@ -180,9 +226,6 @@ I added the entries below to the BioTorrents user's crontab and commented out th
 ```crontab
 0,15,30,45 * * * * curl -s "localhost/schedule.php?key=$SCHEDULE_KEY" >> /var/log/nginx/schedule.log 2>&1
 2-59/5 * * * * php /var/www/$SITE_NAME/peerupdate.php $PEER_UPDATE_KEY >> /var/log/nginx/peerupdate.log
-* * * * * indexer -c /etc/sphinxsearch/sphinx.conf --rotate delta requests_delta >/dev/null 2>&1
-7 * * * * indexer -c /etc/sphinxsearch/sphinx.conf --rotate torrents >/dev/null 2>&1
-7 0,12 * * * indexer -c /etc/sphinxsearch/sphinx.conf --rotate --all >/dev/null 2>&1
 #4 * * * * /usr/local/bin/backup
 ```
 
@@ -291,6 +334,123 @@ Sphinx is a full-text search engine for the major FOSS relational databases that
 I installed it and used the `/etc/sphinxsearch/sphinx.conf` example in [Oppaitime's Git wiki](https://git.oppaiti.me/Oppaitime/Gazelle/wiki/Sphinx-Config).
 Note that Debian's Sphinx locations differ somewhat from Oppaitime's example.
 
+After fiddling with systemd init scripts, I used cron in the end.
+Adding `@reboot /usr/bin/searchd` to root's crontab did the trick.
+It was also necessary to add the Sphinx jobs to root's tab, instead of the biotorrents user.
+
+```crontab
+* * * * * indexer -c /etc/sphinxsearch/sphinx.conf --rotate delta requests_delta >/dev/null 2>&1
+7 * * * * indexer -c /etc/sphinxsearch/sphinx.conf --rotate torrents >/dev/null 2>&1
+7 0,12 * * * indexer -c /etc/sphinxsearch/sphinx.conf --rotate --all >/dev/null 2>&1
+```
+
+
+## Building and installing Ocelot
+
+BioTorrents.de uses What.CD's Ocelot with the
+[10th anniversary mixtape patches](https://twitter.com/whatcd/status/923942203080273921).
+The patched version is available at
+[biotorrents/ocelot](/biotorrents/ocelot).
+
+I downloaded [What.CD's Ocelot](https://github.com/WhatCD/Ocelot.git) with Git and consulted the [readme](https://github.com/WhatCD/Ocelot/blob/master/README.md).
+Then I installed the dependencies as below.
+
+```shell
+apt install \
+	automake \
+	g++ \
+	gcc \
+	libboost-dev \
+	libboost-iostreams-dev \
+	libboost-system-dev \
+	libev-dev \
+	libmysql++-dev \
+	libtcmalloc-minimal4 \
+	make
+```
+
+I performed the ritual of compilation and humbly took the wafer and the wine.
+Note that I needed to run `autoreconf(1)` and manually set the library locations to prepare the environment.
+
+```shell
+cd /tmp/Ocelot/
+autoreconf
+./configure \
+	--with-boost-libdir=/usr/lib/x86_64-linux-gnu \
+	--with-ev-lib=/usr/lib/x86_64-linux-gnu \
+	--with-mysql-lib=/usr/lib/x86_64-linux-gnu \
+	--with-mysqlpp-lib=/usr/lib/x86_64-linux-gnu
+make
+make install
+```
+
+Then I copied and edited `Ocelot/ocelot.conf.dist`.
+The daemon runs on `localhost:34001` and Nginx reverse proxies it to `localhost:34000` with TLS.
+`ocelot.conf` lives in the Ocelot user's home folder and the daemon runs in a tmux window there.
+
+
+## Fine tuning Gazelle
+
+I took a deep breath and ate dark chocolate and drank red wine.
+It all began to fall into place even though I had no oysters.
+
+It was very important to disable `DEBUG_MODE` and `FEATURE_SET_ENC_KEY_PUBLIC` as soon as I registered the admin account!
+Gazelle's 2FA implementation required `qrencode(1)`, so I installed it and enabled 2FA on the admin account.
+
+I configured a client whitelist on the Toolbox page by the [BitTorrent spec's peer ID list](https://wiki.theory.org/index.php/BitTorrentSpecification#peer_id).
+The tracker only allows high quality, open source clients at the most recent major versions.
+Note that LibTorrent 0.1x.y also covers rTorrent/ruTorrent and other clients that use [rakshasa's library](https://github.com/rakshasa/libtorrent).
+
+| Client Name		| Peer ID	|
+| :--			| :--:		|
+| Deluge 1.x.y		| `-DE1`	|
+| Deluge 2.x.y		| `-DE2`	|
+| KTorrent 3.x.y	| `-KT3`	|
+| KTorrent 4.x.y	| `-KT4`	|
+| KTorrent 5.x.y	| `-KT5`	|
+| LibTorrent x.y.z	| `-lt`		|
+| LibTorrent 0.1x.y	| `-lt01`	|
+| qBittorrent 2.x.y	| `-qB2`	|
+| qBittorrent 3.x.y	| `-qB3`	|
+| qBittorrent 4.x.y	| `-qB4`	|
+| Transmission 2.xy	| `-TR2`	|
+
+Then I used the Toolbox to configure the forums and flatten the user classes.
+The idea was to take all the fun and exclusivity out of it and to flount the conventions of private media piracy BitTorrent trackers.
+Ratio rules still apply and members are expected to give back by seeding downloaded torrents for as long as possible.
+
+
+## Further development
+
+BioTorrents.de is under active development.
+[Please see the Git repo](/biotorrents/gazelle) for more information.
+Besides making the site look and act less like an anime porn tracker, two specific challenges include adding NCBI autocomplete functionality and updating the image proxy to serve DOI numbers via Sci-Hub.
+
+
+## Economy considerations
+
+The bulk of the tracker-related work has to do with how the code enforces the economy.
+This is patchy, e.g., few sites punish Hit n' Runs even though many count them.
+
+What I envision is a Bonus Points economy where BPs accumulate only after a long HnR period.
+The BP rate would be a function of the torrent's size and the percent metadata completed.
+This should enourage long seeds and a fully annotated database.
+
+The economy is an open problem and discussion is welcome.
+Please see the
+[BioTorrents.de suggestions forum](https://biotorrents.de/forums.php?action=viewforum&forumid=2)
+for details.
+
+
+# Appendix: Outdated config info
+
+I revised this document prior to the Easter Monday 2020 launch.
+Lots changed over a year of development, and the real work is just starting.
+Please find the original configs for different software below.
+
+
+## Sphinx via systemd
+
 I also had to prepare the Sphinx user's home folder `/var/run/sphinxsearch` and make an init script.
 I made `/etc/systemd/system/searchd` with the script below and made it executable.
 
@@ -332,74 +492,3 @@ WantedBy=multi-user.target
 ```
 
 This let me manage the Sphinx daemon with standard system tools.
-
-
-## Building and installing Ocelot
-
-I downloaded [What.CD's Ocelot](https://github.com/WhatCD/Ocelot.git) with Git and consulted the [readme](https://github.com/WhatCD/Ocelot/blob/master/README.md).
-Then I installed the dependencies as below.
-
-```shell
-apt install \
-	automake \
-	g++ \
-	gcc \
-	libboost-dev \
-	libboost-iostreams-dev \
-	libboost-system-dev \
-	libev-dev \
-	libmysql++-dev \
-	libtcmalloc-minimal4 \
-	make
-```
-
-I performed the ritual of compilation and humbly took the wafer and the wine.
-Note that I needed to run `autoreconf(1)` and manually set the library locations to prepare the environment.
-
-```shell
-cd /tmp/Ocelot/
-autoreconf
-./configure \
-	--with-boost-libdir=/usr/lib/x86_64-linux-gnu \
-	--with-ev-lib=/usr/lib/x86_64-linux-gnu \
-	--with-mysql-lib=/usr/lib/x86_64-linux-gnu \
-	--with-mysqlpp-lib=/usr/lib/x86_64-linux-gnu
-make
-make install
-```
-
-Then I copied and edited `Ocelot/ocelot.conf.dist`.
-The daemon runs on `localhost:34001` and Nginx reverse proxies it to `localhost:34000` with TLS.
-`ocelot.conf` lives in the BioTorrents user's home folder and the daemon runs in a tmux window there.
-
-
-## Fine tuning Gazelle
-
-I took a deep breath and ate dark chocolate and drank red wine.
-It all began to fall into place even though I had no oysters.
-
-It was very important to disable `DEBUG_MODE` and `FEATURE_SET_ENC_KEY_PUBLIC` as soon as I registered the admin account!
-Gazelle's 2FA implementation required `qrencode(1)`, so I installed it and enabled 2FA on the admin account.
-
-I configured a client whitelist on the Toolbox page by the [BitTorrent spec's peer ID list](https://wiki.theory.org/index.php/BitTorrentSpecification#peer_id).
-The tracker only allows high quality, open source clients at the latest major version.
-Note that LibTorrent 0.1x.y also covers rTorrent/ruTorrent and other clients that use [rakshasa's library](https://github.com/rakshasa/libtorrent).
-
-| Client Name		| Peer ID	|
-| :--			| :--:		|
-| Deluge 1.x.y		| `-DE1`	|
-| KTorrent 5.x.y	| `-KT5`	|
-| LibTorrent 0.1x.y	| `-lt01`	|
-| Transmission 2.xy	| `-TR2`	|
-| qBittorrent 4.x.y	| `-qB4`	|
-
-Then I used the Toolbox to configure the forums and flatten the user classes.
-The idea was to take all the fun and exclusivity out of it and to flount the conventions of private media piracy BitTorrent trackers.
-Ratio rules still apply and members are expected to give back by seeding downloaded torrents for as long as possible.
-
-
-## Further development
-
-BioTorrents.de is under active development.
-[Please see the Git repo](/biotorrents/gazelle) for more information.
-Besides making the site look and act less like an anime porn tracker, two specific challenges include adding NCBI autocomplete functionality and updating the image proxy to serve DOI numbers via Sci-Hub.
