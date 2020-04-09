@@ -7,6 +7,7 @@
 **[BioTorrents.de](https://biotorrents.de) officially launched on Easter Monday 2020.**
 Having an anniversary whose date changes every year appeals to me.
 The freeleech days are on the solstices and equinoxes.
+That's when all torrents are freeleech for a day.
 
 
 # Introduction
@@ -169,9 +170,18 @@ Whever possible, BioTorrents.de uses dedicated system users to control useland e
 This helps keep compilation files, GitHub repos, and other miscellaneous software organized.
 It also adds a nice security benefit because, e.g., IRC can't kill the tracker.
 
+**Email.**
+The email uses virtual user accounts and is set up according to
+[Gilles's OpenSMTPd and Dovecot guide](https://poolp.org/posts/2019-09-14/setting-up-a-mail-server-with-opensmtpd-dovecot-and-rspamd/).
+
+**Database.**
+MariaDB has different development and production databases and credentials.
+There's a MariaDB web interface for sanity's sake only accessible over SOCKSv5 proxy.
+
 **Website.**
 The BioTorrents user owns the production website files.
 It also runs the Gazelle cron jobs (peerupdate and schedule).
+My user owns the development files, the website only accessible over SOCKSv5 proxy.
 
 **Tracker.**
 The Ocelot user has simple launchers for production and development instances.
@@ -181,7 +191,7 @@ These run on different ports and connect to different databases.
 The IRCd user runs the IRC network and the auto-restart cron job.
 
 **Hermes.**
-The Hermes user is the IRC sitebot, subject to change.
+The Hermes user is the IRC sitebot, subject to change in the future.
 
 **BioNet.**
 The BioNet user will run a BioNet node when production code is ready.
@@ -325,7 +335,7 @@ I found no compelling evidence to suggest this was a security risk.
 sql_mode = "STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
 ```
 
-[The MySQL Utilities](https://packages.debian.org/sid/mysql-utilities) provided helpful tools to avoid too many SQL queries.
+[MySQL Utilities](https://packages.debian.org/sid/mysql-utilities) provided helpful tools to avoid too many SQL queries.
 
 
 ## Sphinx and indexing
@@ -336,7 +346,7 @@ Note that Debian's Sphinx locations differ somewhat from Oppaitime's example.
 
 After fiddling with systemd init scripts, I used cron in the end.
 Adding `@reboot /usr/bin/searchd` to root's crontab did the trick.
-It was also necessary to add the Sphinx jobs to root's tab, instead of the biotorrents user.
+It was also necessary to add the Sphinx jobs to root's tab, instead of the BioTorrents user.
 
 ```crontab
 * * * * * indexer -c /etc/sphinxsearch/sphinx.conf --rotate delta requests_delta >/dev/null 2>&1
@@ -352,8 +362,9 @@ BioTorrents.de uses What.CD's Ocelot with the
 The patched version is available at
 [biotorrents/ocelot](/biotorrents/ocelot).
 
-I downloaded [What.CD's Ocelot](https://github.com/WhatCD/Ocelot.git) with Git and consulted the [readme](https://github.com/WhatCD/Ocelot/blob/master/README.md).
+I downloaded consulted the [readme](https://github.com/WhatCD/Ocelot/blob/master/README.md) for [What.CD's Ocelot](https://github.com/WhatCD/Ocelot.git).
 Then I installed the dependencies as below.
+Note that compilation specifics often depend on the device.
 
 ```shell
 apt install \
