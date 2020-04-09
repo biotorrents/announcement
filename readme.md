@@ -419,8 +419,7 @@ Note that LibTorrent 0.1x.y also covers rTorrent/ruTorrent and other clients tha
 | KTorrent 3.x.y	| `-KT3`	|
 | KTorrent 4.x.y	| `-KT4`	|
 | KTorrent 5.x.y	| `-KT5`	|
-| LibTorrent x.y.z	| `-lt`		|
-| LibTorrent 0.1x.y	| `-lt01`	|
+| LibTorrent 0.x.y	| `-lt0`	|
 | qBittorrent 2.x.y	| `-qB2`	|
 | qBittorrent 3.x.y	| `-qB3`	|
 | qBittorrent 4.x.y	| `-qB4`	|
@@ -428,7 +427,10 @@ Note that LibTorrent 0.1x.y also covers rTorrent/ruTorrent and other clients tha
 
 Then I used the Toolbox to configure the forums and flatten the user classes.
 The idea was to take all the fun and exclusivity out of it and to flount the conventions of private media piracy BitTorrent trackers.
+
 Ratio rules still apply and members are expected to give back by seeding downloaded torrents for as long as possible.
+Private BitTorrent is a gentleman's agreement as shown in
+[Calomel's rTorrent hacking guide](https://calomel.org/rtorrent_mods.html).
 
 
 ## Further development
