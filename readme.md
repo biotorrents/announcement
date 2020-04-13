@@ -94,24 +94,24 @@ It uses minimal CPU and RAM resources, and only intermittent bursts of bandwidth
 
 ```shell
 $ uname -a
-Linux ohm 4.19.0-3-amd64 #1 SMP Debian 4.19.20-1 (2019-02-11) x86_64 GNU/Linux
+Linux ohm 5.5.0-1-amd64 #1 SMP Debian 5.5.13-2 (2020-03-30) x86_64 GNU/Linux
 
 $ nginx -v
-nginx version: nginx/1.14.2
+nginx version: nginx/1.16.1
 
 $ mysql -V
-mysql  Ver 14.14 Distrib 5.7.25, for Linux (x86_64) using  EditLine wrapper
+mysql  Ver 14.14 Distrib 5.7.26, for Linux (x86_64) using  EditLine wrapper
 
 $ php -v 
-PHP 7.3.2-3 (cli) (built: Feb  8 2019 15:05:54) ( NTS )
-Copyright (c) 1997-2018 The PHP Group
-Zend Engine v3.3.2, Copyright (c) 1998-2018 Zend Technologies
-    with Zend OPcache v7.3.2-3, Copyright (c) 1999-2018, by Zend Technologies
+PHP 7.4.3 (cli) (built: Feb 23 2020 07:07:28) ( NTS )
+Copyright (c) The PHP Group
+Zend Engine v3.4.0, Copyright (c) Zend Technologies
+    with Zend OPcache v7.4.3, Copyright (c), by Zend Technologies
 
 $ indexer
-Sphinx 2.2.11-id64-release (95ae9a6)                                           
-Copyright (c) 2001-2016, Andrew Aksyonoff                                      
-Copyright (c) 2008-2016, Sphinx Technologies Inc (http://sphinxsearch.com)     
+Sphinx 2.2.11-id64-release (95ae9a6)
+Copyright (c) 2001-2016, Andrew Aksyonoff
+Copyright (c) 2008-2016, Sphinx Technologies Inc (http://sphinxsearch.com)
 ```
 
 First I changed the root password on the VPS as soon as it was installed.
