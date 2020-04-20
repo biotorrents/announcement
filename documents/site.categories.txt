@@ -1,0 +1,62 @@
+BioTorrents.de migrated to a new ontology on 2020-04-20 that radically reconfigured the existing categories and positioned the site for growth. This page describes how BioTorrents.de is organized into functional categories based on [url=https://www.ncbi.nlm.nih.gov/books/NBK25464/][i]Catalyzing Inquiry at the Interface of Computing and Biology,[/i] Chapter 3[/url]. A [b]tl;dr[/b] version appears before the textbook explanation for each category.
+
+== Sequences ==
+For data that's ACGT, ACGU, amino acid letters on disk. BioTorrents.de supports most platforms such as Illumina MiSeq, Nanopore, RNA-Seq, etc., and most formats such as FASTA/Q, GenBank, etc.
+
+[quote]Sequence data, such as those associated with the DNA of various species, have grown enormously with the development of automated sequencing technology. In addition to the human genome, a variety of other genomes have been collected, covering organisms including bacteria, yeast, chicken, fruit flies, and mice. Other projects seek to characterize the genomes of all of the organisms living in a given ecosystem even without knowing all of them beforehand. Sequence data generally consist of text strings indicating appropriate bases, but when there are gaps in sequence data, gap lengths (or bounds on gap lengths) must be specified as well.[/quote]
+
+== Graphs ==
+For pathway and regulatory network data, structured taxonomies, etc. The platform indicates what type of data it is, and BioTorrents.de has comprehensive support for various XML flavors and other structured data formats.
+
+[quote]Biological data indicating relationships can be captured as graphs, as in the cases of pathway data (e.g., metabolic pathways, signaling pathways, gene regulatory networks), genetic maps, and structured taxonomies. Even laboratory processes can be represented as workflow process model graphs and can be used to support formal representation for use in laboratory information management systems.[/quote]
+
+== Systems ==
+For data that examines one facet broadly, not one subject deeply. Data uploaded here may be more heterogeneous than in other categories. If your data are chiefly nucleotides or amino acids on disk, please use the Sequences category with the Aligned/Annotated option checked.
+
+[quote]Because systems biology is highly dependent on comparing the behavior of various biological units, data points that might be associated with the behavior of an individual unit must be collected for thousands or tens of thousands of comparable units. For example, gene expression experiments can compare expression profiles of tens of thousands of genes, and since researchers are interested in how expression profiles vary as a function of different experimental conditions (perhaps hundreds or thousands of such conditions), what was one data point associated with the expression of one gene under one set of conditions now becomes 10^6 to 10^7 data points to be analyzed.[/quote]
+
+== Geometric ==
+For structured data (XML, etc.) that describes the subject's orientation in space. Please use this category for molecular data only. Use the Spatial category for data that can be mapped to human-scale locations, e.g., Germany's virus outbreaks.
+
+[quote]Because a great deal of biological function depends on relative shape (e.g., the “docking” behavior of molecules at a potential binding site depends on the three-dimensional configuration of the molecule and the site), molecular structure data are very important. Graphs are one way of representing three-dimensional structure (e.g., of proteins), but ball-and-stick models of protein backbones provide a more intuitive representation.[/quote]
+
+== Scalars/Vectors ==
+For data that describes observations over time and/or space. Please use this category for biological and chemical processes recorded to observe a state change in response to environmental conditions. Use Spatial for multidimensional maps.
+
+[quote]Scalar and vector field data are relevant to natural phenomena that vary continuously in space and time. In biology, scalar and vector field properties are associated with chemical concentration and electric charge across the volume of a cell, current fluxes across the surface of a cell or through its volume, and chemical fluxes across cell membranes, as well as data regarding charge, hydrophobicity, and other chemical properties that can be specified over the surface or within the volume of a molecule or a complex.[/quote]
+
+== Patterns ==
+For data that describes recurring structures in nature such as common pathways or motifs in the proteome or metabolome. Please consider this the Systems equivalent of the Geometric category.
+
+[quote]Within the genome are patterns that characterize biologically interesting entities. For example, the genome contains patterns associated with genes (i.e., sequences of particular genes) and with regulatory sequences (that determine the extent of a particular gene's expression). Proteins are characterized by particular genomic sequences. Patterns of sequence data can be represented as regular expressions, hidden Markov models (HMMs), stochastic context-free grammars (for RNA sequences), or other types of grammars. Patterns are also interesting in the exploration of protein structure data, microarray data, pathway data, proteomics data, and metabolomics data.[/quote]
+
+== Constraints ==
+For data that records experimental control behavior, checks readings against known physical constants, tracks the thermodynamic limits of reactions, etc. Basically, all calibration, error checking, and redundancy data belongs here.
+
+[quote]Consistency within a database is critical if the data are to be trustworthy, and biological databases are no exception. For example, individual chemical reactions in a biological pathway must locally satisfy the conservation of mass for each element involved. Reaction cycles in thermodynamic databases must satisfy global energy conservation constraints. Other examples of nonlocal constraints include the prohibition of cycles in overlap graphs of DNA sequence reads for linear chromosomes or in the directed graphs of conceptual or biological taxonomies.[/quote]
+
+== Images ==
+
+For data you can look at! Includes direct captures (X-rays, photographs, etc.) visualizations of machine data (MRI/NMR, etc.) but as of this writing, BioTorrents.de only supports still images.
+
+[quote]Imagery, both natural and artificial, is an important part of biological research. Electron and optical microscopes are used to probe cellular and organ function. Radiographic images are used to highlight internal structure within organisms. Fluorescence is used to identify the expressions of genes. Cartoons are often used to simplify and represent complex phenomena. Animations and movies are used to depict the operation of biological mechanisms over time and to provide insight and intuitive understanding that far exceeds what is available from textual descriptions or formal mathematical representations.[/quote]
+
+== Spatial ==
+For data that's limited to specific locations or otherwise describes macroscopic space. Country and state breakdowns, epidemiology data, and anything based on geographical distributions.
+
+[quote]Real biological entities, from cells to ecosystems, are not spatially homogeneous, and a great deal of interesting science can be found in understanding how one spatial region is different from another. Thus, spatial relationships must be captured in machine-readable form, and other biologically significant data must be overlaid on top of these relationships.[/quote]
+
+== Models ==
+For projections, simulations, and other hypothetical or computer-generated data.
+
+[quote]Computational models must be compared and evaluated. As the number of computational models grows, machine-readable data types that describe computational models—both the form and the parameters of the model—are necessary to facilitate comparison among models.[/quote]
+
+== Documents ==
+For documentation, software, disk images, and literature datasets. Please [b]do not[/b] upload individual papers or collections of papers to BioTorrents.de, only sets of citations! Further Sci-Hub integration, including a caching proxy for PDF downloads, is in development. There are other places to download ebooks, journal articles, etc.
+
+[quote]The biological literature itself can be regarded as data to be exploited to find relationships that would otherwise go undiscovered. Biological prose is the basis for annotations, which can be regarded as a form of metadata. Annotations are critical for researchers seeking to assign meaning to biological data.[/quote]
+
+== Machine Data ==
+For raw reads and machine data of any category. Any data that comes directly from a machine and isn't immediately useful as such. This category's metadata is likely to change in the future.
+
+[quote]As the complexity of various biological systems is unraveled, machine-readable representations of analytic and theoretical results as well as the underlying inferential chains that lead to various hypotheses will be necessary if relationships are to be uncovered in this enormous body of knowledge.[/quote]
