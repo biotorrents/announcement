@@ -257,6 +257,19 @@ I paid particular attention to [Cipherli.st's security hardened headers](https:/
 The goal was to achieve a perfect score on the [Qualys SSL server test](https://www.ssllabs.com/ssltest/analyze.html?d=biotorrents.de&s=51.68.175.209&hideResults=on).
 Web server security moves fast so I read grey hat news as part of my security posture.
 
+Note that in order for BitTorrent peers to properly connect, the Nginx config for Ocelot needs to set the `Host` header correctly.
+Please see the `proxy_pass` stanza below for an idea of the proper config.
+
+```nginx
+# https://nginx.org/en/docs/http/ngx_http_proxy_module.html
+location / {
+proxy_pass       http://127.0.0.1:34000;
+proxy_set_header Host $remote_addr:$proxy_port;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_set_header X-Real-IP $remote_addr;
+}
+```
+
 
 ## PHP and memcached
 
